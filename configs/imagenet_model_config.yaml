@@ -1,0 +1,11 @@
+# dont change this
+image_size: 64
+num_channels: 128
+num_res_blocks: 3
+learn_sigma: True
+diffusion_steps: 4000
+noise_schedule: cosine
+class_cond: False
+dropout: 0.0
+use_zero_module: True
+clip_denoised: True

@@ -1,0 +1,19 @@
+# model params
+image_size: 32
+num_channels: 128
+num_res_blocks: 3
+learn_sigma: True
+diffusion_steps: 4000
+noise_schedule: cosine
+class_cond: False
+dropout: 0.3
+schedule_sampler: uniform
+use_zero_module: True
+
+# training hyperparams
+lr: 0.0001
+batch_size: 128
+n_training_iters: 500000
+log_interval: 100
+save_interval: 50000
+plot_interval: 25000
