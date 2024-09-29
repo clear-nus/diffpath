@@ -59,6 +59,19 @@ def load_celeba(data_dir, batch_size, image_size, train=False, interpolation_mod
     loader = DataLoader(subset, batch_size=batch_size, shuffle=shuffle, num_workers=1, drop_last=False)
     return loader
 
+def load_celeba_resized(data_dir, batch_size, image_size, train=False, interpolation_mode='bilinear', shuffle=True):
+    transform = transforms.Compose([
+        transforms.CenterCrop(140),
+        transforms.Resize((32, 32), interpolation=get_interpolation_mode(interpolation_mode)),
+        transforms.Resize((image_size, image_size), interpolation=get_interpolation_mode(interpolation_mode)),
+        transforms.ToTensor(),
+        transforms.Normalize((.5, .5, .5), (.5, .5, .5))
+    ])
+    dataset = CelebA(data_dir, download=True, transform=transform, split='train' if train else 'test')
+    subset = build_subset_per_process(dataset)
+    loader = DataLoader(subset, batch_size=batch_size, shuffle=shuffle, num_workers=1, drop_last=False)
+    return loader
+
 
 def load_cifar10(data_dir, batch_size, image_size, train=False, interpolation_mode='bilinear', shuffle=True):
     transform = transforms.Compose([
@@ -83,9 +96,20 @@ def load_svhn(data_dir, batch_size, image_size, train=False, interpolation_mode=
     loader = DataLoader(subset, batch_size=batch_size, shuffle=shuffle, num_workers=1, drop_last=False)
     return loader
 
-
 def load_textures(data_dir, batch_size, image_size, train=False, interpolation_mode='bilinear', shuffle=True):
     transform = transforms.Compose([
+        transforms.Resize((image_size, image_size), interpolation=get_interpolation_mode(interpolation_mode)),
+        transforms.ToTensor(),
+        transforms.Normalize((.5, .5, .5), (.5, .5, .5))
+    ])
+    dataset = DTD(data_dir, download=True, transform=transform, split='train' if train else 'test')
+    subset = build_subset_per_process(dataset)
+    loader = DataLoader(subset, batch_size=batch_size, shuffle=shuffle, num_workers=1, drop_last=False)
+    return loader
+
+def load_textures_resized(data_dir, batch_size, image_size, train=False, interpolation_mode='bilinear', shuffle=True):
+    transform = transforms.Compose([
+        transforms.Resize((32, 32), interpolation=get_interpolation_mode(interpolation_mode)),
         transforms.Resize((image_size, image_size), interpolation=get_interpolation_mode(interpolation_mode)),
         transforms.ToTensor(),
         transforms.Normalize((.5, .5, .5), (.5, .5, .5))
@@ -113,10 +137,14 @@ def load_data(dataset, data_dir, batch_size, image_size, train, interpolation_mo
         dataloader = load_cifar10(data_dir, batch_size, image_size, train, interpolation_mode, shuffle)
     elif dataset == "celeba":
         dataloader = load_celeba(data_dir, batch_size, image_size, train, interpolation_mode, shuffle)
+    elif dataset == "celeba_resized":
+        dataloader = load_celeba_resized(data_dir, batch_size, image_size, train, interpolation_mode, shuffle)
     elif dataset == "svhn":
         dataloader = load_svhn(data_dir, batch_size, image_size, train, interpolation_mode, shuffle)
     elif dataset == "textures":
         dataloader = load_textures(data_dir, batch_size, image_size, train, interpolation_mode, shuffle)
+    elif dataset == "textures_resized":
+        dataloader = load_textures_resized(data_dir, batch_size, image_size, train, interpolation_mode, shuffle)
     elif dataset == "cifar100":
         dataloader = load_cifar100(data_dir, batch_size, image_size, train, interpolation_mode, shuffle)
     else:

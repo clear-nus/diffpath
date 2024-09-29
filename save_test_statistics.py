@@ -19,6 +19,7 @@ def main():
     args = create_argparser().parse_args()
     dist_util.setup_dist(args.device)
     args.timestep_respacing = f"ddim{args.n_ddim_steps}"
+    assert args.model in ["imagenet", "celeba"]
     
     with open(args.config, 'r') as fp:
         config = yaml.safe_load(fp)
@@ -38,8 +39,12 @@ def main():
     model.to(dist_util.dev())
     model.eval()
 
-    print(f"Loading {args.dataset}")
-    dataloader = load_data(args.dataset, args.data_dir, args.batch_size, args.image_size, train=False)
+    if args.model == 'imagenet':
+        dataset_name = args.dataset + "_resized"
+    else:
+        dataset_name = args.dataset
+    print(f"Loading {dataset_name}")
+    dataloader = load_data(dataset_name, args.data_dir, args.batch_size, args.image_size, train=False)
     reverse_sample_fn = diffusion.ddim_reverse_sample_loop
     n_ddim_steps = len(diffusion.betas)
     
@@ -111,7 +116,7 @@ def main():
     deps_dt_cb_arr = np.array(deps_dt_cb_arr)
     deps_dt_cb_cbrt_arr = np.array(deps_dt_cb_cbrt_arr)
 
-    save_dir = f"test_statistics/{args.timestep_respacing}"
+    save_dir = f"test_statistics_{args.model}_model/{args.timestep_respacing}"
     os.makedirs(save_dir, exist_ok=True)
     np.savez_compressed(os.path.join(save_dir, args.dataset), eps_sum=eps_sum_arr, eps_sum_abs=eps_sum_abs_arr, eps_sum_sq=eps_sum_sq_arr, 
                         eps_sum_sq_sqrt=eps_sum_sq_sqrt_arr, eps_sum_cb=eps_sum_cb_arr, eps_sum_cb_cbrt = eps_sum_cb_cbrt_arr, 
@@ -121,9 +126,10 @@ def main():
 
 def create_argparser():
     defaults = dict(
+        model="imagenet",
         config="configs/imagenet_model_config.yaml",
         batch_size=256,
-        n_ddim_steps=50,
+        n_ddim_steps=10,
         device=0,
         data_dir="",
         dataset="",
