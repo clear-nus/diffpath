@@ -51,8 +51,7 @@ python save_test_statistics.py --model celeba --data_dir /path/to/cifar10/datase
 ```
 ```
 # calculate statistics for SVHN test set on GPU ID 0
-python save_test_statistics.py --model celeba --data_dir /path/to/svhn/dataset --dataset svhn --model_path /path/to/celeba/model/checkpoint
---config configs/celeba_model_config.yaml --batch_size 256 --n_ddim_steps 10 --device 0
+python save_test_statistics.py --model celeba --data_dir /path/to/svhn/dataset --dataset svhn --model_path /path/to/celeba/model/checkpoint --config configs/celeba_model_config.yaml --batch_size 256 --n_ddim_steps 10 --device 0
 ```
 The statistics will be saved as ```.npz``` files in ```train_statistics_celeba_model/ddim10``` and ```test_statistics_celeba_model/ddim10``` respectively.
 
