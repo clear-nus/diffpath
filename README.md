@@ -27,13 +27,13 @@ pip install -r requirements.txt
 ```
 
 ## Download Diffusion Model Checkpoints
-# CelebA 32x32
+### CelebA 32x32
 We provide our pretrained diffusion model checkpoint on CelebA 32x32 at [https://huggingface.co/ajrheng/diffpath/tree/main](https://huggingface.co/ajrheng/diffpath/tree/main). Alternatively,
 ```
 wget https://huggingface.co/ajrheng/diffpath/resolve/main/celeba_ema_0.9999_499999.pt
 ```
 
-# ImageNet 64x64
+### ImageNet 64x64
 Download the ImageNet-64 diffusion model checkpoint trained with ```L-hybrid``` objective from the [openai/improved-diffusion](https://github.com/openai/improved-diffusion) repo. Alternatively,
 ```
 wget https://openaipublic.blob.core.windows.net/diffusion/march-2021/imagenet64_uncond_100M_1500K.pt
