@@ -61,3 +61,13 @@ python eval_6d.py --model celeba --in_dist cifar10 --out_of_dist svhn --n_ddim_s
 ```
 The results will be printed to the screen.
 
+## BibTeX
+If you find this repository or the ideas presented in our paper useful, please consider citing our work.
+```
+@article{heng2024out,
+  title={Out-of-Distribution Detection with a Single Unconditional Diffusion Model},
+  author={Heng, Alvin and Thiery, Alexandre H and Soh, Harold},
+  journal={arXiv preprint arXiv:2405.11881},
+  year={2024}
+}
+```
